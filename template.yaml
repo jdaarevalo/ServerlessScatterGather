@@ -66,3 +66,22 @@ Resources:
             - Type: bigint
               Name: deaths
               Comment: "# deaths"
+
+########################################################
+# S3 Bucket processed data
+########################################################
+  ProcessedDataS3Bucket:
+    Type: 'AWS::S3::Bucket'
+    Properties:
+      BucketName: !Join
+        - "-"
+        - - "scatter-gather-processed-data"
+          - !Select
+            - 0
+            - !Split
+              - "-"
+              - !Select
+                - 2
+                - !Split
+                  - "/"
+                  - !Ref "AWS::StackId"
