@@ -7,13 +7,13 @@
 
 # Variables
 export AWS_REGION=eu-west-1
-export ENVIRONMENT=$1
+export ENVIRONMENT="staging"
 export STACK_NAME="serverless-scatter-gather"
 
 
 sam build
 sam deploy \
---profile=${ENVIRONMENT} \
+--profile=latana-${ENVIRONMENT} \
 --stack-name "${STACK_NAME}" \
 --region "${AWS_REGION}" \
 --resolve-s3 \
