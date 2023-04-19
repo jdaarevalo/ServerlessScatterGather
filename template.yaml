@@ -13,6 +13,21 @@ Parameters:
     Default: "s3://covid19-lake/rearc-covid-19-nyt-data-in-usa/json/us-states"
     Description: "S3 location for raw sample data."
 
+  RegionName:
+    Type: String
+    Default: 'eu-west-1'
+    Description: Default region for deployment.
+  
+  SGProcessesTableName:
+    Type: String
+    Default: scatter_gather_processes
+    Description: DynamoDB table name to store information by process triggered
+  
+  SGAggregateTableName:
+    Type: String
+    Default: scatter_gather_aggregate
+    Description: DynamoDB table name to store information by scatter_gatter aggregated
+
 Resources:
 ########################################################
 # Glue table
@@ -100,12 +115,14 @@ Resources:
       Policies: 
         - AmazonAthenaFullAccess
         - AmazonS3FullAccess
+        - AmazonDynamoDBFullAccess
       Timeout: 180
       MemorySize: 512
       Environment:
         Variables:
           ATHENA_RAW_DATABASE_NAME: !Ref RawDataBaseName
           S3_BUCKET_NAME: !Ref ProcessedDataS3Bucket
+          SG_PROCESSES_TABLE_NAME: !Ref SGProcessesTableName
       Layers:
         - !Sub 'arn:aws:lambda:${RegionName}:017000801446:layer:AWSLambdaPowertoolsPythonV2:16'
         - !Sub  'arn:aws:lambda:${RegionName}:336392948345:layer:AWSSDKPandas-Python39:5'
@@ -124,3 +141,76 @@ Resources:
     Properties:
       VisibilityTimeout: 200
       QueueName: "processor_q"
+
+########################################################
+# DynamoDB tables
+########################################################
+  SGProcessesDBTable: 
+    Type: AWS::DynamoDB::Table
+    Properties: 
+      TableName: !Ref SGProcessesTableName
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1 
+      KeySchema: 
+        - 
+          AttributeName: "scatter_gather_id"
+          KeyType: "HASH"
+        - 
+          AttributeName: "process_id"
+          KeyType: "RANGE"
+      AttributeDefinitions: 
+        - 
+          AttributeName: "scatter_gather_id"
+          AttributeType: "S"
+        - 
+          AttributeName: "process_id"
+          AttributeType: "S"
+      StreamSpecification:
+        StreamViewType: "NEW_IMAGE"
+
+  SGAggregateDBTable: 
+    Type: AWS::DynamoDB::Table
+    Properties: 
+      TableName: !Ref SGAggregateTableName
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1 
+      KeySchema: 
+        - 
+          AttributeName: "scatter_gather_id"
+          KeyType: "HASH"
+      AttributeDefinitions: 
+        - 
+          AttributeName: "scatter_gather_id"
+          AttributeType: "S"
+      StreamSpecification:
+        StreamViewType: "NEW_IMAGE"
+
+########################################################
+# Lambda Function Scatter
+########################################################
+  ScatterFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/
+      Handler: scatter_lambda.lambda_handler
+      Runtime: python3.9
+      Architectures:
+        - x86_64
+      Policies: 
+        - AmazonDynamoDBFullAccess
+        - AmazonAthenaFullAccess
+        - AmazonS3FullAccess
+        - AmazonSQSFullAccess
+      Timeout: 180
+      MemorySize: 512
+      Environment:
+        Variables:
+          SG_PROCESSES_TABLE_NAME: !Ref SGProcessesTableName
+          SG_AGGREGATE_TABLE_NAME: !Ref SGAggregateTableName
+          ATHENA_RAW_DATABASE_NAME: !Ref RawDataBaseName
+          QUEUE_URL: !GetAtt ProcessorSqsQueue.QueueUrl
+      Layers:
+        - !Sub 'arn:aws:lambda:${RegionName}:017000801446:layer:AWSLambdaPowertoolsPythonV2:16'
+        - !Sub  'arn:aws:lambda:${RegionName}:336392948345:layer:AWSSDKPandas-Python39:5'
