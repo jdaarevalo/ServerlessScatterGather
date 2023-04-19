@@ -3,11 +3,13 @@ import json
 import awswrangler as wr
 from datetime import datetime
 from aws_lambda_powertools import Logger
+from dynamo_operations import update_item_finished
 
 logger = Logger()
 
 ATHENA_RAW_DATABASE_NAME = os.getenv('ATHENA_RAW_DATABASE_NAME')
 S3_BUCKET_NAME = os.getenv('S3_BUCKET_NAME')
+SG_PROCESSES_TABLE_NAME = os.getenv('SG_PROCESSES_TABLE_NAME')
 
 datetime_now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
@@ -18,7 +20,7 @@ def lambda_handler(event, context):
     json_body = json.loads(event["Records"][0]["body"])
     state_event = json_body.get("state")
     index_event = json_body.get("index")
-
+  
     # Extract data from Athena
     # - Query data to the specific state
     query = f"""
@@ -35,11 +37,14 @@ def lambda_handler(event, context):
     except Exception as exception:
         errors.append(exception)
         logger.error({"action":"fetch_data", "payload":{"error":str(exception), "query":query, "db":ATHENA_RAW_DATABASE_NAME}})
-    # Create your own transformations
+    # Made your own transformations
     # Load data in s3
     wr.s3.to_parquet(df=state_data, path=f"s3://{S3_BUCKET_NAME}/index={index_event}/data.parquet")
 
     # Update the status item in Dynamo
+    item_state = json_body.get("item_state")
+    update_item_finished(SG_PROCESSES_TABLE_NAME, item_state)
+    logger.info({"action":"update_item", "payload":{"item_state":item_state}})
 
     return {
         "statusCode": 200 if not errors else 400,
