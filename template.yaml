@@ -85,3 +85,42 @@ Resources:
                 - !Split
                   - "/"
                   - !Ref "AWS::StackId"
+
+########################################################
+# Lambda Function processor
+########################################################
+  ProcessorFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/
+      Handler: processor_lambda.lambda_handler
+      Runtime: python3.9
+      Architectures:
+        - x86_64
+      Policies: 
+        - AmazonAthenaFullAccess
+        - AmazonS3FullAccess
+      Timeout: 180
+      MemorySize: 512
+      Environment:
+        Variables:
+          ATHENA_RAW_DATABASE_NAME: !Ref RawDataBaseName
+          S3_BUCKET_NAME: !Ref ProcessedDataS3Bucket
+      Layers:
+        - !Sub 'arn:aws:lambda:${RegionName}:017000801446:layer:AWSLambdaPowertoolsPythonV2:16'
+        - !Sub  'arn:aws:lambda:${RegionName}:336392948345:layer:AWSSDKPandas-Python39:5'
+      Events:
+        MySQSEvent:
+          Type: SQS
+          Properties:
+            Queue: !GetAtt ProcessorSqsQueue.Arn
+            BatchSize: 1
+
+########################################################
+# SQS to trigger the Lambda Function processor
+########################################################
+  ProcessorSqsQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      VisibilityTimeout: 200
+      QueueName: "processor_q"
