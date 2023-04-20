@@ -214,3 +214,37 @@ Resources:
       Layers:
         - !Sub 'arn:aws:lambda:${RegionName}:017000801446:layer:AWSLambdaPowertoolsPythonV2:16'
         - !Sub  'arn:aws:lambda:${RegionName}:336392948345:layer:AWSSDKPandas-Python39:5'
+
+########################################################
+# Lambda Function Aggregator
+########################################################
+  AggregatorFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/
+      Handler: aggregator_lambda.lambda_handler
+      Runtime: python3.9
+      Architectures:
+        - x86_64
+      Policies: 
+        - AmazonDynamoDBFullAccess
+      Timeout: 180
+      MemorySize: 128
+      Environment:
+        Variables:
+          SG_AGGREGATE_TABLE_NAME: !Ref SGAggregateTableName
+      Layers:
+        - !Sub 'arn:aws:lambda:${RegionName}:017000801446:layer:AWSLambdaPowertoolsPythonV2:16'
+
+  EventSourceSGProcessesDBTableStream:
+    Type: AWS::Lambda::EventSourceMapping
+    Properties:
+      BatchSize: 100
+      MaximumBatchingWindowInSeconds: 30
+      Enabled: True
+      FilterCriteria:
+        Filters:
+          - Pattern: '{"eventName":["MODIFY"]}'
+      EventSourceArn: !GetAtt SGProcessesDBTable.StreamArn
+      FunctionName: !GetAtt AggregatorFunction.Arn
+      StartingPosition: LATEST

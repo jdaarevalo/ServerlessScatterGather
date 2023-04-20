@@ -1,0 +1,233 @@
+{
+    "Records": [
+      {
+        "eventID": "cd7b427a0e6a874d9d0ca49670146335",
+        "eventName": "INSERT",
+        "eventVersion": "1.1",
+        "eventSource": "aws:dynamodb",
+        "awsRegion": "eu-west-1",
+        "dynamodb": {
+          "ApproximateCreationDateTime": 1681566782,
+          "Keys": {
+            "process_id": {
+              "S": "0_Arizona"
+            },
+            "scatter_gather_id": {
+              "S": "1681566441"
+            }
+          },
+          "NewImage": {
+            "process_id": {
+              "S": "0_Arizona"
+            },
+            "updated_at": {
+              "S": "2023-04-15 13:53:02"
+            },
+            "created_at": {
+              "S": "2023-04-15 13:53:02"
+            },
+            "scatter_gather_id": {
+              "S": "1681566441"
+            },
+            "status": {
+              "S": "started"
+            }
+          },
+          "SequenceNumber": "2997700000000006409554458",
+          "SizeBytes": 163,
+          "StreamViewType": "NEW_AND_OLD_IMAGES"
+        },
+        "eventSourceARN": "arn:aws:dynamodb:eu-west-1:xxxx:table/scatter_gather_processes/stream/2023-04-15T13:51:45.781"
+      },
+      {
+        "eventID": "5d829974f31fb4dea695803cbaf3ae8e",
+        "eventName": "INSERT",
+        "eventVersion": "1.1",
+        "eventSource": "aws:dynamodb",
+        "awsRegion": "eu-west-1",
+        "dynamodb": {
+          "ApproximateCreationDateTime": 1681566782,
+          "Keys": {
+            "process_id": {
+              "S": "1_Nevada"
+            },
+            "scatter_gather_id": {
+              "S": "1681566441"
+            }
+          },
+          "NewImage": {
+            "process_id": {
+              "S": "1_Nevada"
+            },
+            "updated_at": {
+              "S": "2023-04-15 13:53:02"
+            },
+            "created_at": {
+              "S": "2023-04-15 13:53:02"
+            },
+            "scatter_gather_id": {
+              "S": "1681566441"
+            },
+            "status": {
+              "S": "started"
+            }
+          },
+          "SequenceNumber": "2997800000000006409554534",
+          "SizeBytes": 161,
+          "StreamViewType": "NEW_AND_OLD_IMAGES"
+        },
+        "eventSourceARN": "arn:aws:dynamodb:eu-west-1:xxxx:table/scatter_gather_processes/stream/2023-04-15T13:51:45.781"
+      },
+      {
+        "eventID": "7d09ae7e21b624e6297e26e0e05abb30",
+        "eventName": "INSERT",
+        "eventVersion": "1.1",
+        "eventSource": "aws:dynamodb",
+        "awsRegion": "eu-west-1",
+        "dynamodb": {
+          "ApproximateCreationDateTime": 1681566782,
+          "Keys": {
+            "process_id": {
+              "S": "2_Maine"
+            },
+            "scatter_gather_id": {
+              "S": "1681566441"
+            }
+          },
+          "NewImage": {
+            "process_id": {
+              "S": "2_Maine"
+            },
+            "updated_at": {
+              "S": "2023-04-15 13:53:02"
+            },
+            "created_at": {
+              "S": "2023-04-15 13:53:02"
+            },
+            "scatter_gather_id": {
+              "S": "1681566441"
+            },
+            "status": {
+              "S": "started"
+            }
+          },
+          "SequenceNumber": "2997900000000006409554535",
+          "SizeBytes": 159,
+          "StreamViewType": "NEW_AND_OLD_IMAGES"
+        },
+        "eventSourceARN": "arn:aws:dynamodb:eu-west-1:xxxx:table/scatter_gather_processes/stream/2023-04-15T13:51:45.781"
+      },
+      {
+        "eventID": "dbd2a888693f127da3e8e614c2ee8db9",
+        "eventName": "MODIFY",
+        "eventVersion": "1.1",
+        "eventSource": "aws:dynamodb",
+        "awsRegion": "eu-west-1",
+        "dynamodb": {
+          "ApproximateCreationDateTime": 1681566786,
+          "Keys": {
+            "process_id": {
+              "S": "2_Maine"
+            },
+            "scatter_gather_id": {
+              "S": "1681566441"
+            }
+          },
+          "NewImage": {
+            "process_id": {
+              "S": "2_Maine"
+            },
+            "updated_at": {
+              "S": "2023-04-15 13:53:06"
+            },
+            "created_at": {
+              "S": "2023-04-15 13:53:02"
+            },
+            "scatter_gather_id": {
+              "S": "1681566441"
+            },
+            "status": {
+              "S": "finished"
+            }
+          },
+          "OldImage": {
+            "process_id": {
+              "S": "2_Maine"
+            },
+            "updated_at": {
+              "S": "2023-04-15 13:53:02"
+            },
+            "created_at": {
+              "S": "2023-04-15 13:53:02"
+            },
+            "scatter_gather_id": {
+              "S": "1681566441"
+            },
+            "status": {
+              "S": "started"
+            }
+          },
+          "SequenceNumber": "3002200000000006409558408",
+          "SizeBytes": 275,
+          "StreamViewType": "NEW_AND_OLD_IMAGES"
+        },
+        "eventSourceARN": "arn:aws:dynamodb:eu-west-1:xxxx:table/scatter_gather_processes/stream/2023-04-15T13:51:45.781"
+      },
+      {
+        "eventID": "cca68efaf4449793dfe192fae696397b",
+        "eventName": "MODIFY",
+        "eventVersion": "1.1",
+        "eventSource": "aws:dynamodb",
+        "awsRegion": "eu-west-1",
+        "dynamodb": {
+          "ApproximateCreationDateTime": 1681566787,
+          "Keys": {
+            "process_id": {
+              "S": "1_Nevada"
+            },
+            "scatter_gather_id": {
+              "S": "1681566441"
+            }
+          },
+          "NewImage": {
+            "process_id": {
+              "S": "1_Nevada"
+            },
+            "updated_at": {
+              "S": "2023-04-15 13:53:06"
+            },
+            "created_at": {
+              "S": "2023-04-15 13:53:02"
+            },
+            "scatter_gather_id": {
+              "S": "1681566441"
+            },
+            "status": {
+              "S": "finished"
+            }
+          },
+          "OldImage": {
+            "process_id": {
+              "S": "1_Nevada"
+            },
+            "updated_at": {
+              "S": "2023-04-15 13:53:02"
+            },
+            "created_at": {
+              "S": "2023-04-15 13:53:02"
+            },
+            "scatter_gather_id": {
+              "S": "1681566441"
+            },
+            "status": {
+              "S": "started"
+            }
+          },
+          "SequenceNumber": "3002300000000006409558507",
+          "SizeBytes": 278,
+          "StreamViewType": "NEW_AND_OLD_IMAGES"
+        },
+        "eventSourceARN": "arn:aws:dynamodb:eu-west-1:xxxx:table/scatter_gather_processes/stream/2023-04-15T13:51:45.781"
+      }
+    ]
+}
