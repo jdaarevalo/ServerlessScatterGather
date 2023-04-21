@@ -1,0 +1,57 @@
+{
+    "Records": [
+        {
+            "eventID": "7e89dcd5b54adf027cc781fed789001a",
+            "eventName": "MODIFY",
+            "eventVersion": "1.1",
+            "eventSource": "aws:dynamodb",
+            "awsRegion": "eu-west-1",
+            "dynamodb": {
+                "ApproximateCreationDateTime": 1681591039,
+                "Keys": {
+                    "scatter_gather_id": {
+                        "S": "1681590978"
+                    }
+                },
+                "NewImage": {
+                    "finished_processes": {
+                        "N": "56"
+                    },
+                    "total_processes": {
+                        "N": "56"
+                    },
+                    "updated_at": {
+                        "S": "2023-04-15 20:37:19"
+                    },
+                    "created_at": {
+                        "S": "2023-04-15 20:36:24"
+                    },
+                    "scatter_gather_id": {
+                        "S": "1681590978"
+                    }
+                },
+                "OldImage": {
+                    "finished_processes": {
+                        "N": "36"
+                    },
+                    "total_processes": {
+                        "N": "56"
+                    },
+                    "updated_at": {
+                        "S": "2023-04-15 20:36:50"
+                    },
+                    "created_at": {
+                        "S": "2023-04-15 20:36:24"
+                    },
+                    "scatter_gather_id": {
+                        "S": "1681590978"
+                    }
+                },
+                "SequenceNumber": "2600000000020777961733",
+                "SizeBytes": 271,
+                "StreamViewType": "NEW_AND_OLD_IMAGES"
+            },
+            "eventSourceARN": "arn:aws:dynamodb:eu-west-1:xxxx:table/scatter_gather_aggregate/stream/2023-04-15T19:43:00.921"
+        }
+    ]
+}
