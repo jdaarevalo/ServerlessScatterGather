@@ -248,3 +248,34 @@ Resources:
       EventSourceArn: !GetAtt SGProcessesDBTable.StreamArn
       FunctionName: !GetAtt AggregatorFunction.Arn
       StartingPosition: LATEST
+
+########################################################
+# Lambda Function Gather
+########################################################
+  GatherFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/
+      Handler: gather_lambda.lambda_handler
+      Runtime: python3.9
+      Architectures:
+        - x86_64
+      Policies: 
+        - AmazonDynamoDBFullAccess
+      Timeout: 180
+      MemorySize: 128
+      Layers:
+        - !Sub 'arn:aws:lambda:${RegionName}:017000801446:layer:AWSLambdaPowertoolsPythonV2:16'
+
+  EventSourceSGAggregateDBTableStream:
+    Type: AWS::Lambda::EventSourceMapping
+    Properties:
+      BatchSize: 100
+      MaximumBatchingWindowInSeconds: 30
+      Enabled: True
+      FilterCriteria:
+        Filters:
+          - Pattern: '{"eventName":["MODIFY"]}'
+      EventSourceArn: !GetAtt SGAggregateDBTable.StreamArn
+      FunctionName: !GetAtt GatherFunction.Arn
+      StartingPosition: LATEST
