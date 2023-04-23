@@ -5,6 +5,8 @@
 
 This repository contains the code and resources to implement the AWS Serverless Scatter-Gather Pattern, a powerful approach for optimizing data processing, enhancing performance, and streamlining resource usage in your data engineering projects.
 
+Read the explanation and full details here https://aws.plainenglish.io/scalable-data-processing-with-aws-serverless-scatter-gather-pattern-implementation-63d25d6f6d23
+
 ## Architecture
 ![ServerlessScatterGather](https://user-images.githubusercontent.com/2475570/233821558-c15b9a69-8d1d-42aa-8923-737af54c5056.png)
 
